@@ -7,6 +7,7 @@ public class InterpolacjaNewtona {
 	Double x[];
 	Double y[];
 	Double b[];
+	int n;
 	
 	public InterpolacjaNewtona () { 
 		
@@ -66,6 +67,7 @@ public class InterpolacjaNewtona {
 		
 		try {
 			this.b = new Double[x.size() == y.size() ? x.size() : null];
+			this.n = x.size() == y.size() ? x.size() : null;
 			
 		} catch (Exception e) {
 			System.err.println("Podano nieprawidłową ilość danych wejściowych.");
@@ -75,18 +77,37 @@ public class InterpolacjaNewtona {
 		this.y = y.toArray(this.y);
 	}
 
+	public Double wyliczMnozniki (int base, int iter) {
+		
+		Double wynik = 1.0;
+		
+		if (iter >= 1) {
+			
+			if (iter > base) {
+				iter++;
+			}
+			
+			for (int i = 0; i < iter; i++) {
+				if (base != i) {
+					wynik *= x[base] - x[i];
+				}
+			}
+		}
+		
+		return wynik;
+	}
+	
+	public Double wyliczB (int i) {
+		
+		return null;
+	}
+	
 	public static void main(String[] args) {
 
-		InterpolacjaNewtona interpolacja = new InterpolacjaNewtona();
-		interpolacja.getUserInput();
+		//InterpolacjaNewtona interpolacja = new InterpolacjaNewtona();
+		//interpolacja.getUserInput();
 		
-		for (Double val : interpolacja.x) {
-			System.out.print(val + ", ");
-		}
 		
-		for (Double val : interpolacja.x) {
-			System.out.print(val + ", ");
-		}
 
 	}
 
