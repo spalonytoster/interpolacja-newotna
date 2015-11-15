@@ -13,7 +13,7 @@ public class InterpolacjaNewtona {
 		
 	}
 	
-	public InterpolacjaNewtona (Double x[], Double y[], Double b[]) {
+	public InterpolacjaNewtona (Double x[], Double y[]) {
 		
 		this.x = x;
 		this.y = y;
@@ -97,9 +97,89 @@ public class InterpolacjaNewtona {
 		return wynik;
 	}
 	
-	public Double wyliczB (int i) {
+	public Double wyliczB (int n, double y) {
 		
-		return null;
+        double licznik = y;
+        
+        for (int i = 0; i < n; i++) {
+            licznik -= b[i]*wyliczMnozniki(n, i);
+        }
+        
+        double mianownik = wyliczMnozniki(n, n);
+        
+        return licznik/mianownik;
+	}
+	
+
+	public double[] budujWielomian() {
+		
+		 double suma[] = new double [n];
+	     double iloczyn[] = new double [n];
+	     
+	     for(int i=0; i<n; i++) {
+	         suma[i]=0;
+	         iloczyn[i]=0;
+	     }
+	     
+	     suma[0]=b[0];
+	     
+	     if (n!=1) {
+	        suma = budujWiekszyWielomian(suma, iloczyn);
+	     }
+	     
+		return suma;
+	}  
+	
+	public double[] budujWiekszyWielomian(double suma[], double iloczyn[]) {
+		
+	     double pom[] = new double[n];
+	     for(int i=0; i<n; i++)
+	          pom[i]=0;
+	     iloczyn[1]++;
+	     iloczyn[0]=(-x[0]);
+	     suma[1]=b[1];
+	     suma[0]+=iloczyn[0]*b[1];
+	     for(int i=2; i<n; i++) {  
+	    	 
+             for(int k=0; k<i; k++) {
+                 pom[k+1]+=iloczyn[k];
+                 pom[k]+=(iloczyn[k]*(-x[i-1]));
+             }
+             
+             for(int k=0; k<n; k++) {
+                 iloczyn[k]=pom[k]; 
+             }
+             
+             for(int k=0;k<n; k++) {
+                 suma[k]+=(iloczyn[k]*b[i]);
+                 pom[k]=0;
+             } 
+	     } 
+	     
+		return suma;
+	}
+	
+	public void dajWielomian() {
+		
+	    b[0] = y[0];
+	    for (int i = 1; i < n; i++)
+	         b[i]=wyliczB(i, y[i]);
+	    double[] wynik = new double[n];
+	    wynik = budujWielomian();
+	    String wypisz = "";
+	    for (int i = n-1; i >= 0; i--)
+	    	if(wynik[i]!=0)
+	    	{
+	    		if(wynik[i] > 0 && !wypisz.equals(""))
+	    			wypisz += "+";
+	    		if(i == 0)
+	    			wypisz += Double.toString(wynik[i]);
+	    		else if(i == 1)
+	    			wypisz += wynik[i]+"x";
+	    		else
+	    			wypisz += wynik[i]+"x"+i;
+	    	}
+    	System.out.print(wypisz);    		
 	}
 	
 	public static void main(String[] args) {
