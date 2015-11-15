@@ -237,7 +237,7 @@ public class InterpolacjaNewtona {
 	    		else if(i == 1)
 	    			wypisz += wynik[i]+"x";
 	    		else
-	    			wypisz += wynik[i]+"x"+i;
+	    			wypisz += wynik[i]+"x^"+i;
 	    	}
     	System.out.print(wypisz);    		
 	}
