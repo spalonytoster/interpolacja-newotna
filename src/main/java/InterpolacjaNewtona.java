@@ -242,13 +242,27 @@ public class InterpolacjaNewtona {
     	System.out.print(wypisz);    		
 	}
 	
+	public void wypiszDane() {
+		System.out.println();
+		for (Double x : this.x) {
+			System.out.print(x + ", ");
+		}
+		System.out.println();
+		for (Double y : this.y) {
+			System.out.print(y + ", ");
+		}
+		System.out.println();
+	}
+	
 	public static void main(String[] args) {
 
 		Double x[] = {1.0, 2.0, 4.0, 5.0};
 		Double y[] = {0.0, 2.0, 12.0, 20.0};
 		InterpolacjaNewtona interpolacja = new InterpolacjaNewtona(x, y);
 		interpolacja.dajWielomian();
+		interpolacja.wypiszDane();
 		interpolacja.dodajPunktyWezlowe();
+		interpolacja.wypiszDane();
 		interpolacja.dajWielomian();
 
 	}
