@@ -1,4 +1,8 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -10,7 +14,16 @@ public class InterpolacjaNewtona {
 	Double y[];
 	Double b[];
 	int n;
+	List<String> wielomianyDoNarysowania = new ArrayList<>();
+	String[] kolor = {
+			
+			"green", "red", "blue",
+			"black", "brown", "slateblue"
+	};
 	
+	int przedzialOd = -5;
+	int przedzialDo = 5;
+
 	public InterpolacjaNewtona () { 
 		
 	}
@@ -27,6 +40,14 @@ public class InterpolacjaNewtona {
 		} else {
 			throw new ArithmeticException("Podano nierówną liczbę argumentów");
 		}
+	}
+	
+	public void setPrzedzialOd(int przedzialOd) {
+		this.przedzialOd = przedzialOd;
+	}
+
+	public void setPrzedzialDo(int przedzialDo) {
+		this.przedzialDo = przedzialDo;
 	}
 	
 	public void getUserInput() {
@@ -219,7 +240,7 @@ public class InterpolacjaNewtona {
 		return suma;
 	}
 	
-	public void dajWielomian() {
+	public String dajWielomian() {
 		
 	    b[0] = y[0];
 	    for (int i = 1; i < n; i++)
@@ -235,11 +256,13 @@ public class InterpolacjaNewtona {
 	    		if(i == 0)
 	    			wypisz += Double.toString(wynik[i]);
 	    		else if(i == 1)
-	    			wypisz += wynik[i]+"x";
+	    			wypisz += wynik[i]+"*x";
 	    		else
-	    			wypisz += wynik[i]+"x^"+i;
+	    			wypisz += wynik[i]+"*x^"+i;
 	    	}
-    	System.out.print(wypisz);    		
+    	
+	    wielomianyDoNarysowania.add(wypisz);
+	    return wypisz;
 	}
 	
 	public void wypiszDane() {
@@ -254,16 +277,39 @@ public class InterpolacjaNewtona {
 		System.out.println();
 	}
 	
+	public void createRScript() {
+		
+		try {
+			
+			File output = new File("interpolacja-skrypt.r");
+			FileWriter fileWriter = new FileWriter(output);
+			
+			for (int i = 0; i < wielomianyDoNarysowania.size(); i++) {
+				
+				String line = String.format("%scurve(%s, %d, %d, add=TRUE, col=\"%s\") ; abline(h=0,v=0,lty=3)",
+						i == 0 ? "" : "\n", wielomianyDoNarysowania.get(i), przedzialOd, przedzialDo, kolor[i]);
+				fileWriter.write(line);
+			}
+			
+			fileWriter.close();
+		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void main(String[] args) {
 
 		Double x[] = {1.0, 2.0, 4.0, 5.0};
 		Double y[] = {0.0, 2.0, 12.0, 20.0};
 		InterpolacjaNewtona interpolacja = new InterpolacjaNewtona(x, y);
-		interpolacja.dajWielomian();
-		interpolacja.wypiszDane();
+		System.out.println(interpolacja.dajWielomian());
 		interpolacja.dodajPunktyWezlowe();
-		interpolacja.wypiszDane();
-		interpolacja.dajWielomian();
+		System.out.println(interpolacja.dajWielomian());
+		
+		interpolacja.setPrzedzialOd(0);
+		interpolacja.setPrzedzialDo(5);
+		interpolacja.createRScript();
 
 	}
 
