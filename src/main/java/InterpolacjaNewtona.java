@@ -20,6 +20,7 @@ public class InterpolacjaNewtona {
 		
 		if (x.length == y.length) {
 			this.b = new Double[x.length]; 
+			this.n = x.length;
 		
 		} else {
 			throw new ArithmeticException("Podano nierówną liczbę argumentów");
@@ -184,10 +185,10 @@ public class InterpolacjaNewtona {
 	
 	public static void main(String[] args) {
 
-		//InterpolacjaNewtona interpolacja = new InterpolacjaNewtona();
-		//interpolacja.getUserInput();
-		
-		
+		Double x[] = {1.0, 2.0, 4.0, 5.0};
+		Double y[] = {0.0, 2.0, 12.0, 20.0};
+		InterpolacjaNewtona interpolacja = new InterpolacjaNewtona(x, y);
+		interpolacja.dajWielomian();
 
 	}
 
