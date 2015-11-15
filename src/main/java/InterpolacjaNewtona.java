@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 
 public class InterpolacjaNewtona {
 	
@@ -78,6 +80,63 @@ public class InterpolacjaNewtona {
 		this.y = y.toArray(this.y);
 	}
 
+	public void dodajPunktyWezlowe() {
+		
+		ArrayList<Double> x = new ArrayList<>(1);
+		ArrayList<Double> y = new ArrayList<>(1);
+		Scanner scanner = new Scanner(System.in);
+		
+		System.out.println("\nPodaj wartości x:");
+		
+		while (scanner.hasNext()) {
+			
+			String val = scanner.next();
+			
+			if (val.equals("end")) {
+				break;
+				
+			} else {
+				x.add(Double.parseDouble(val));
+			}
+		}
+		
+		System.out.println("Podaj wartości y:");
+		
+		while (scanner.hasNext()) {
+			
+			String val = scanner.next();
+			
+			if (val.equals("end")) {
+				break;
+				
+			} else {
+				y.add(Double.parseDouble(val));
+			}
+		}
+		
+		scanner.close();
+		
+		Double newX[] = new Double[x.size()];
+		Double newY[] = new Double[y.size()];
+		
+		newX = x.toArray(newX);
+		newY = y.toArray(newY);
+		this.x = ArrayUtils.addAll(this.x, newX);
+		this.y = ArrayUtils.addAll(this.y, newY);
+		
+		try {
+			this.b = ArrayUtils.add(this.b, new Double(0.0));
+			this.n = this.x.length == this.y.length ? this.x.length : null;
+			
+		} catch (Exception e) {
+			System.err.println("Podano nieprawidłową ilość danych wejściowych.");
+		}
+		
+//		for (int i = 0; i < this.x.length; i++) {
+//			System.out.println("x = " + this.x[i] + ", y = " + this.y[i]);
+//		}
+	}
+	
 	public Double wyliczMnozniki (int base, int iter) {
 		
 		Double wynik = 1.0;
@@ -188,6 +247,8 @@ public class InterpolacjaNewtona {
 		Double x[] = {1.0, 2.0, 4.0, 5.0};
 		Double y[] = {0.0, 2.0, 12.0, 20.0};
 		InterpolacjaNewtona interpolacja = new InterpolacjaNewtona(x, y);
+		interpolacja.dajWielomian();
+		interpolacja.dodajPunktyWezlowe();
 		interpolacja.dajWielomian();
 
 	}
