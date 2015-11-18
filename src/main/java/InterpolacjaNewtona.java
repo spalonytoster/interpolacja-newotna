@@ -20,6 +20,7 @@ public class InterpolacjaNewtona {
 			"green", "red", "blue",
 			"black", "brown", "slateblue"
 	};
+	Scanner scanner = new Scanner(System.in);
 	
 	int przedzialOd = -5;
 	int przedzialDo = 5;
@@ -54,9 +55,9 @@ public class InterpolacjaNewtona {
 		
 		ArrayList<Double> x = new ArrayList<>();
 		ArrayList<Double> y = new ArrayList<>();
-		Scanner scanner = new Scanner(System.in);
 		
-		System.out.println("Podaj warto≈õci x:");
+		
+		System.out.println("Podaj wartoúci x:");
 		
 		while (scanner.hasNext()) {
 			
@@ -70,7 +71,7 @@ public class InterpolacjaNewtona {
 			}
 		}
 		
-		System.out.println("Podaj warto≈õci y:");
+		System.out.println("Podaj wartoúci y:");
 		
 		while (scanner.hasNext()) {
 			
@@ -84,7 +85,7 @@ public class InterpolacjaNewtona {
 			}
 		}
 		
-		scanner.close();
+		//scanner.close();
 		
 		this.x = new Double[x.size()];
 		this.y = new Double[y.size()];
@@ -94,7 +95,7 @@ public class InterpolacjaNewtona {
 			this.n = x.size() == y.size() ? x.size() : null;
 			
 		} catch (Exception e) {
-			System.err.println("Podano nieprawid≈ÇowƒÖ ilo≈õƒá danych wej≈õciowych.");
+			System.err.println("Podano nieprawid≥owπ iloúÊ danych wejúciowych.");
 		}
 		
 		this.x = x.toArray(this.x);
@@ -107,7 +108,7 @@ public class InterpolacjaNewtona {
 		ArrayList<Double> y = new ArrayList<>(1);
 		Scanner scanner = new Scanner(System.in);
 		
-		System.out.println("\nPodaj warto≈õci x:");
+		System.out.println("\nPodaj wartoúci x:");
 		
 		while (scanner.hasNext()) {
 			
@@ -121,7 +122,7 @@ public class InterpolacjaNewtona {
 			}
 		}
 		
-		System.out.println("Podaj warto≈õci y:");
+		System.out.println("Podaj wartoúci y:");
 		
 		while (scanner.hasNext()) {
 			
@@ -133,9 +134,9 @@ public class InterpolacjaNewtona {
 			} else {
 				y.add(Double.parseDouble(val));
 			}
-		}
+		}	
 		
-		scanner.close();
+		//scanner.close();
 		
 		Double newX[] = new Double[x.size()];
 		Double newY[] = new Double[y.size()];
@@ -150,7 +151,7 @@ public class InterpolacjaNewtona {
 			this.n = this.x.length == this.y.length ? this.x.length : null;
 			
 		} catch (Exception e) {
-			System.err.println("Podano nieprawid≈ÇowƒÖ ilo≈õƒá danych wej≈õciowych.");
+			System.err.println("Podano nieprawid≥owπ iloúÊ danych wejúciowych.");
 		}
 		
 //		for (int i = 0; i < this.x.length; i++) {
@@ -300,14 +301,16 @@ public class InterpolacjaNewtona {
 	
 	public static void main(String[] args) {
 
-		Double x[] = {1.0, 2.0, 4.0, 5.0};
-		Double y[] = {0.0, 2.0, 12.0, 20.0};
-		InterpolacjaNewtona interpolacja = new InterpolacjaNewtona(x, y);
+//		Double x[] = {1.0, 2.0, 3.0};
+//		Double y[] = {5.0, 10.0, 19.0};
+//		InterpolacjaNewtona interpolacja = new InterpolacjaNewtona(x, y);
+		InterpolacjaNewtona interpolacja = new InterpolacjaNewtona();
+		interpolacja.getUserInput();
 		System.out.println(interpolacja.dajWielomian());
 		interpolacja.dodajPunktyWezlowe();
 		System.out.println(interpolacja.dajWielomian());
 		
-		interpolacja.setPrzedzialOd(0);
+		interpolacja.setPrzedzialOd(-5);
 		interpolacja.setPrzedzialDo(5);
 		interpolacja.createRScript();
 
