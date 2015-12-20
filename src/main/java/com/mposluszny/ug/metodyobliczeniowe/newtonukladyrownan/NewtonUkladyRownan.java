@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.function.DoublePredicate;
 
 public class NewtonUkladyRownan {
 	
@@ -118,6 +119,57 @@ public class NewtonUkladyRownan {
 			iter[i] = p;
 		}
 	}
+	
+	public Double calcE (Double... points) {
+		Double underSqrt = 0.0;
+		for (Double arg : points) {
+			underSqrt += (arg*arg);
+		}
+		return Math.sqrt(underSqrt);
+	}
+	
+	public void createRScript() {
+		
+		StringBuilder sbX = new StringBuilder();
+		StringBuilder sbY = new StringBuilder();
+		
+		sbX.append("iteracje = c(");
+		for (int i = 0; i < n-1; i++) {
+			sbX.append(i+1);
+			sbX.append(",");
+		}
+		sbX.append(n);
+		sbX.append(")\n");
+		
+		Double[] e = new Double[n];
+		
+		for (int i = 0; i < n; i++) {
+			e[i] = calcE(iter[i]);
+		}
+		
+		sbY.append("e = c(");
+		for (int i = 0; i < n-1; i++) {
+			sbY.append(e[i]);
+			sbY.append(",");
+		}
+		sbY.append(e[n-1]);
+		sbY.append(")\n");
+					
+		try {
+			
+			File output = new File("newton-skrypt.r");
+			FileWriter fileWriter = new FileWriter(output);
+			
+			fileWriter.write(sbX.toString());
+			fileWriter.write(sbY.toString());
+			fileWriter.write("plot(iteracje,e,type=\"b\")");
+			
+			fileWriter.close();
+		
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
 
 	public static void main(String[] args) {
 		NewtonUkladyRownan newton = new NewtonUkladyRownan();
@@ -125,6 +177,7 @@ public class NewtonUkladyRownan {
 		newton.wykonajIteracje();
 		System.out.println("Wynikiem iteracji nr " + newton.n + " jest wektor: [" + newton.p[0]
 				+ ", " + newton.p[1] + ", " + newton.p[2] + "]");
+		newton.createRScript();
 	}
 	
 }
