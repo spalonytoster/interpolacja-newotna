@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.function.DoublePredicate;
 
 public class NewtonUkladyRownan {
 	
@@ -120,11 +119,12 @@ public class NewtonUkladyRownan {
 		}
 	}
 	
-	public Double calcE (Double... points) {
+	public Double calcE (Double x, Double y, Double z) {
 		Double underSqrt = 0.0;
-		for (Double arg : points) {
-			underSqrt += (arg*arg);
-		}
+		underSqrt += Math.pow((iter[n-1][0]-x), 2);
+		underSqrt += Math.pow((iter[n-1][1]-y), 2);
+		underSqrt += Math.pow((iter[n-1][2]-z), 2);
+		
 		return Math.sqrt(underSqrt);
 	}
 	
@@ -144,7 +144,7 @@ public class NewtonUkladyRownan {
 		Double[] e = new Double[n];
 		
 		for (int i = 0; i < n; i++) {
-			e[i] = calcE(iter[i]);
+			e[i] = calcE(iter[i][0], iter[i][1], iter[i][2]);
 		}
 		
 		sbY.append("e = c(");
