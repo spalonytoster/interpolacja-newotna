@@ -22,7 +22,7 @@ public class MainClass {
 			this.h = (b - a) / n;
 		}
 		
-		private Double calcX(int index) {
+		protected Double calcX(int index) {
 			if (index == 0) {
 				return (double) 0;
 			}
@@ -30,20 +30,20 @@ public class MainClass {
 			return x[index-1] + h;
 		}
 		
-		private Double calcY(int index) {
+		protected Double calcY(int index) {
 			if (index == 0) {
 				return (double) 1;
 			}
 			
-			return y[index-1] + (h * getFunctionValue(index));
+			return y[index-1] + getFunctionValue(index);
 		}
 		
-		private Double getFunctionValue(int index) {
+		protected Double getFunctionValue(int index) {
 			
-			return Math.cos(x[index-1]) - (2 * y[index-1]);
+			return h * (Math.cos(x[index-1]) - (2 * y[index-1]));
 		}
 		
-		private void calculate() {
+		protected void calculate() {
 			
 			for (int i = 0; i <= n; i++) {
 				x[i] = calcX(i);
@@ -54,7 +54,7 @@ public class MainClass {
 			
 		}
 		
-		private void createRScript() {
+		protected void createRScript() {
 			
 			StringBuilder sbX = new StringBuilder();
 			StringBuilder sbY = new StringBuilder();
@@ -94,7 +94,17 @@ public class MainClass {
 		
 	}
 	
-	public class Heunn {
+	static class Heun extends Euler {
+		
+		public Heun(Double a, Double b, int n) {
+			super(a, b, n);
+		}
+		
+		@Override
+		protected Double getFunctionValue(int index) {
+			
+			return (h/2) * (Math.cos(x[index-1]) - 2*y[index-1] + Math.cos(x[index-1] + h) - 2*(y[index-1] + h*(Math.cos(x[index-1]) - 2*y[index-1])));
+		}
 		
 	}
 
@@ -102,12 +112,18 @@ public class MainClass {
 		
 		// Dane startowe
 		Double a = (double) 0;
-		Double b = (double) 30;
-		int n = 30;
+		Double b = (double) 6;
+		int n = 6;
 		
 		Euler euler = new Euler(a, b, n);
 		euler.calculate();
 		euler.createRScript();
+		
+		System.out.println("\n----------------------\n");
+		
+		Heun heun = new Heun(a, b, n);
+		heun.calculate();
+		heun.createRScript();
 		
 	}
 }
