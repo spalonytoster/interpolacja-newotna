@@ -9,10 +9,96 @@ import java.io.PrintWriter;
 public class MainClass {
 	
 	protected final static String FILE_NAME = "r-skrypt.r";
+	protected final static String BLAD_METODY_FILE_NAME = "blad-metod-skrypt.r";
+	
 	protected static Double minX = 0.0;
 	protected static Double minY = 0.0;
 	protected static Double maxX = 0.0;
 	protected static Double maxY = 0.0;
+	
+	protected static void bladEuleraRScript(Euler e, Rozw r) {
+		
+		StringBuilder sbX = new StringBuilder();
+		StringBuilder sbY = new StringBuilder();
+		
+		sbX.append("x = c(");
+		for (int i = 0; i < r.n; i++) {
+			sbX.append(r.x[i]);
+			sbX.append(",");
+		}
+		sbX.append(r.x[r.n]);
+		sbX.append(")\n");
+
+		sbY.append("y = c(");
+		for (int i = 0; i < r.n; i++) {
+			sbY.append(r.y[i] - e.y[i]);
+			sbY.append(",");
+		}
+		sbY.append(r.y[r.n] - e.y[e.n]);
+		sbY.append(")\n");
+					
+		try {
+			
+			String createPlot = "plot(5, 5,type=\"l\",axes=TRUE,ann=TRUE,xlim=c(" + minX + ", " + maxX + "),ylim = c(" + -1.0 + "," + 1.0 + "),xlab=\"x\",ylab=\"y\")\n";
+			String plot = "lines(x, y, type=\"b\", col=\"red\", pch=19, lty=2)";
+			
+			File output = new File(BLAD_METODY_FILE_NAME);
+			FileWriter fileWriter = new FileWriter(output);
+			
+			fileWriter.write(createPlot);
+			fileWriter.write(sbX.toString());
+			fileWriter.write(sbY.toString());
+			fileWriter.write(plot + "\n");
+						
+			fileWriter.close();
+		
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
+	
+	protected static void bladHeunaRScript(Heun h, Rozw r) {
+		
+		StringBuilder sbX = new StringBuilder();
+		StringBuilder sbY = new StringBuilder();
+		
+		sbX.append("x = c(");
+		for (int i = 0; i < r.n; i++) {
+			sbX.append(r.x[i]);
+			sbX.append(",");
+		}
+		sbX.append(r.x[r.n]);
+		sbX.append(")\n");
+
+		sbY.append("y = c(");
+		for (int i = 0; i < r.n; i++) {
+			sbY.append(r.y[i] - h.y[i]);
+			sbY.append(",");
+		}
+		sbY.append(r.y[r.n] - h.y[h.n]);
+		sbY.append(")\n");
+					
+		try {
+			
+			String plot = "lines(x, y, type=\"b\", col=\"blue\", pch=18, lty=3)";
+			
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(BLAD_METODY_FILE_NAME, true)));
+			out.print(sbX.toString());
+			out.print(sbY.toString());
+			out.println(plot);
+			
+			/// LEGENDA ///
+			String legend = "legend('bottomleft', legend=c(\"Blad Eulera\", \"Blad Heuna\"),"
+							+ " col=c(\"red\", \"blue\"), lty=2:3, cex=0.8)";
+			
+			out.print(legend);
+						
+			out.close();
+		
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
 	
 	static class Euler {
 		
@@ -190,8 +276,17 @@ public class MainClass {
 		}
 		
 		@Override
+		protected Double calcY(int index) {
+			if (index == 0) {
+				return (double) 1;
+			}
+			
+			return getFunctionValue(index);
+		}
+		
+		@Override
 		protected Double getFunctionValue(int index) {
-			return (0.2 * Math.pow(Math.E,-2*x[index-1]))*((Math.pow(Math.E,2*x[index-1])*Math.sin(x[index-1]))+2*Math.pow(Math.E,2*x[index-1])*Math.cos(x[index-1])-3);
+			return (0.2 * Math.pow(Math.E,-2*x[index-1]))*((Math.pow(Math.E,2*x[index-1])*Math.sin(x[index-1]))+2*Math.pow(Math.E,2*x[index-1])*Math.cos(x[index-1]) + 3);
 		}
 		
 		protected void createRScript() {
@@ -241,9 +336,9 @@ public class MainClass {
 	public static void main(String[] args) {
 		
 		// Dane startowe
-		Double a = (double) 0;
-		Double b = (double) 10;
-		int n = 10;
+		Double a = 0.0;
+		Double b = 20.0;
+		int n = 20;
 		
 		System.out.println("\n----------- EULER -----------\n");
 		
@@ -262,5 +357,8 @@ public class MainClass {
 		euler.createRScript();
 		heun.createRScript();
 		r.createRScript();
+		
+		bladEuleraRScript(euler, r);
+		bladHeunaRScript(heun, r);
 	}
 }
